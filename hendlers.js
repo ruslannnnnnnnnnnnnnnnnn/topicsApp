@@ -2,8 +2,10 @@ var topicsDb = require("./database/topicsdb");
 var usersDb = require("./database/userdb");
 var sessionDb = require("./database/sessiondb");
 
+
+
 function index(req, response) {
-    response.sendfile("nodeJS/index.html");
+    response.sendfile("index.html");
 }
 
 function hello(req, response) {
