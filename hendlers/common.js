@@ -2,7 +2,7 @@ var topicsDb = require("../database/topicsdb");
 var usersDb = require("../database/userdb");
 var sessionDb = require("../database/sessiondb");
 
-exports.isAuthenticated = function(req, res, next) {
+function isAuthenticated(req, res, next) {
     sessionDb.session(req.session, function(resul) {
         if (resul != null && typeof(next) == "function") {
             next();
@@ -12,7 +12,9 @@ exports.isAuthenticated = function(req, res, next) {
     });
 }
 
-exports.isCreaterTopic = function(req, res, next) {
+exports.isAuthenticated = isAuthenticated;
+
+function isCreaterTopic(req, res, next) {
     isAuthenticated(req, res, () => {
         topicsDb.findTopic(req.body._id, function(resul) {
             if (resul != null && req.session.authId == resul.createrId && typeof(next) == "function") {
@@ -24,7 +26,9 @@ exports.isCreaterTopic = function(req, res, next) {
     });
 }
 
-exports.isCreaterUser = function(req, res, next) {
+exports.isCreaterTopic = isCreaterTopic;
+
+function isCreaterUser(req, res, next) {
     isAuthenticated(req, res, () => {
         var callBack = function(resul) {
             if (resul != null && req.session.authId == resul._id) {
@@ -48,3 +52,5 @@ exports.isCreaterUser = function(req, res, next) {
             usersDb.findUser(req.session.authId, callBack);
     });
 }
+
+exports.isCreaterUser = isCreaterUser;
