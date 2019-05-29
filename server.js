@@ -1,5 +1,5 @@
 var express = require("express");
-var hendlers = [require("./hendlers/commonHendlers"), require("./hendlers/topicsHendler"), require("./hendlers/usernHendler")];
+var hendlers = [require("./hendlers/commonHendlers"), require("./hendlers/topicsHendler"), require("./hendlers/usersHendler")];
 var bodyParser = require("body-parser");
 var multer = require("multer");
 var mongoose = require("mongoose");
