@@ -1,3 +1,7 @@
+var topicsDb = require("../database/topicsdb");
+var usersDb = require("../database/userdb");
+var sessionDb = require("../database/sessiondb");
+
 exports.isAuthenticated = function(req, res, next) {
     sessionDb.session(req.session, function(resul) {
         if (resul != null && typeof(next) == "function") {
