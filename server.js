@@ -6,17 +6,18 @@ var mongoose = require("mongoose");
 
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var connect = require("./database/connect.js");
 
 var upload = multer();
 var app = express();
+
+mongoose.connect(connect.cluster + connect.db, { useNewUrlParser: true });
 
 app.use(session({
     secret: 'i need more beers',
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({
-        url: 'mongodb://localhost:27017/mydb',
-    })
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
 app.use(bodyParser.json());

@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 var userShema = require("./shems/user.js");
 
+var connect = require("./connect.js");
 var User = mongoose.model("User", userShema.userShema);
 
-
 exports.connect = function() {
-    mongoose.connect('mongodb://localhost:27017/mydb', { useNewUrlParser: true });
+    mongoose.connect(connect.cluster + connect.db, { useNewUrlParser: true });
 };
 
 exports.insert = function(myobj, callBack) {

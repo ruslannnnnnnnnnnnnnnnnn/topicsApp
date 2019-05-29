@@ -1,11 +1,12 @@
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/";
+var connect = require("./connect.js");
+var url = connect.cluster;
 
 exports.sessions = function(callBack) {
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
 
-        var dbo = db.db("mydb");
+        var dbo = db.db(connect.db);
 
         dbo.collection("sessions").find().toArray(function(err, res) {
             if (err) throw err;
@@ -22,7 +23,7 @@ exports.session = function(session, callBack) {
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
 
-        var dbo = db.db("mydb");
+        var dbo = db.db(connect.db);
 
         dbo.collection("sessions").findOne({ _id: session.id }, function(err, res) {
             if (err) throw err;
@@ -48,7 +49,7 @@ exports.remove = function(sessionId, callBack) {
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
 
-        var dbo = db.db("mydb");
+        var dbo = db.db(connect.db);
 
         dbo.collection("sessions").remove({ _id: sessionId }, function(err, res) {
             if (err) throw err;

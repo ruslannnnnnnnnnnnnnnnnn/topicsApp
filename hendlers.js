@@ -5,7 +5,7 @@ var sessionDb = require("./database/sessiondb");
 
 
 function index(req, response) {
-    response.sendfile("index.html");
+    response.sendfile("topicsServer/index.html");
 }
 
 function hello(req, response) {
@@ -101,12 +101,17 @@ exports.insertUser = function(req, res) {
             usersDb.findLogin(req.body.login, function(resul) {
                 if (resul == null) {
                     usersDb.insert({
-                        password: req.body.password,
-                        email: req.body.email,
-                        login: req.body.login,
-                        age: req.body.age,
-                        name: req.body.name
-                    }, (resul) => res.send({ isRegister: true }));
+                            password: req.body.password,
+                            email: req.body.email,
+                            login: req.body.login,
+                            age: req.body.age,
+                            name: req.body.name
+                        },
+                        function(resul) {
+                            req.session.authId = resul._id;
+                            req.session.login = resul.login;
+                            res.send({ isRegister: true });
+                        });
                     console.log("register save");
                 } else
                     res.send({ isLogin: true });

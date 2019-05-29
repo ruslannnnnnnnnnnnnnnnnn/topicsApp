@@ -1,44 +1,15 @@
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/";
+var mongoose = require('mongoose');
+var topicShema = require("./shems/topic.js");
 
-/*
-MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("mydb");
-    var myobj = { title: "title", text: "text", topic: "4" };
-    dbo.collection("topics").insertOne(myobj, function(err, res) {
-        if (err) throw err;
-        console.log("1 document inserted");
-        db.close();
-    });
+var connect = require("./connect.js");
+var Topic = mongoose.model("Topic", topicShema.topicShema);
+
+
+mongoose.connect(connect.cluster + connect.db, { useNewUrlParser: true });
+
+var topic = new Topic({
+    title: "hello1"
 });
-*/
-
-function find(topic) {
-    MongoClient.connect(url, function(err, db) {
-        if (err) throw err;
-
-        var dbo = db.db("mydb");
-
-        dbo.collection("topics").findOne({ topic: topic }, function(err, res) {
-            if (err) throw err;
-            console.log(res);
-            db.close();
-        });
-    });
-};
-
-find(4);
-/*
-
-MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("mydb");
-    dbo.collection("topics").find({}).toArray(function(err, result) {
-        if (err) throw err;
-        console.log(result);
-        db.close();
-    });
+topic.save().then(function(res) {
+    console.log("1 document inserted");
 });
-
-*/
