@@ -1,5 +1,5 @@
 var express = require("express");
-var hendlers = require("./hendlers");
+var hendlers = [require("./hendlers/commonHendlers"), require("./hendlers/topicsHendler"), require("./hendlers/usernHendler")];
 var bodyParser = require("body-parser");
 var multer = require("multer");
 var mongoose = require("mongoose");
@@ -22,10 +22,12 @@ app.use(session({
 
 app.use(bodyParser.json());
 
-for (var hendler in hendlers) {
-    if (typeof hendlers[hendler] === "function" ||
-        Array.isArray(hendlers[hendler]) && hendlers[hendler].every((item) => typeof item == "function")) {
-        app.all('/' + hendler, ...[upload.array()].concat(hendlers[hendler]));
+for (var i = 0; i < hendlers.length; i++) {
+    for (var hendler in hendlers[i]) {
+        if (typeof hendlers[i][hendler] === "function" ||
+            Array.isArray(hendlers[i][hendler]) && hendlers[i][hendler].every((item) => typeof item == "function")) {
+            app.all('/' + hendler, ...[upload.array()].concat(hendlers[i][hendler]));
+        }
     }
 }
 
