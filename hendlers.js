@@ -5,7 +5,7 @@ var sessionDb = require("./database/sessiondb");
 
 
 function index(req, response) {
-    response.sendfile("/index.html");
+    response.sendfile("topicsServer/index.html");
 }
 
 function hello(req, response) {
